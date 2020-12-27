@@ -1,5 +1,5 @@
 import React, { useState,useEffect} from 'react';
-import {TextField, Container} from "@material-ui/core";
+import {TextField, Container, Card, CardContent} from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { Autocomplete } from '@material-ui/lab';
@@ -23,6 +23,8 @@ const Dashboard = () => {
         getUsername();
       }, []);
 
+    let [selectedUser, setSelectedUser] = useState({ name: '', email: '', id:'' });
+
     const getUsername = () => {
 
         const token = localStorage.getItem('token');
@@ -43,6 +45,7 @@ const Dashboard = () => {
         <Autocomplete
         id="combo-box-demo"
         options={usernames}
+        onChange={(event, value) => setSelectedUser(value)} 
         getOptionLabel={(option) => option.name}
         style={{ width: 400, marginTop: '4rem' }}
         renderInput={(params) => (
@@ -52,7 +55,33 @@ const Dashboard = () => {
         )}
       />
         </div>
+        <div>
+          <Card style={{ marginTop: '1rem', marginBottom: '1rem', backgroundColor: '#d6d6d6' }}>
+            <CardContent>
+              {
+                selectedUser ? 
+                  <h3><strong>Selected User:</strong> <span>{selectedUser.name}</span></h3> 
+                : 
+                  <h3><strong>Selected User:</strong> </h3>
+              }
 
+              {
+                selectedUser ? 
+                  <h5><strong>Id:</strong> {selectedUser.id}</h5>
+                : 
+                  <h5><strong>Id:</strong></h5>
+              }
+
+              {
+                selectedUser ? 
+                  <h5><strong>Email:</strong> {selectedUser.email}</h5>
+                : 
+                  <h5><strong>Email:</strong></h5>
+              }
+              
+            </CardContent>
+          </Card>
+        </div>
       </Container>
      );
 }
